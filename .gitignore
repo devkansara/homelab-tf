@@ -1,0 +1,26 @@
+# Local / secrets - never commit (homelab-tf)
+
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.tfstate.lock.info
+
+# Credentials
+.env
+*/.env
+.env.*
+!.env.example
+*.tfvars
+!*.tfvars.example
+*.auto.tfvars
+*.pem
+*.key
+
+# OS
+.DS_Store

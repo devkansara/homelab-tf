@@ -1,0 +1,11 @@
+# After creating org + workspace, copy over backend.tf and run: terraform init
+# (answer yes to migrate local state). Set workspace execution mode to **local**.
+terraform {
+  cloud {
+    organization = "RBAC-Horizon"
+
+    workspaces {
+      name = "rbac-horizon"
+    }
+  }
+}

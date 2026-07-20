@@ -1,0 +1,11 @@
+proxmox_endpoint  = "https://10.10.0.173:8006/"
+proxmox_api_token = "terraform@pve!tf=REPLACE_WITH_TOKEN_UUID"
+proxmox_insecure  = true
+proxmox_node      = "node1"
+
+# Contents of ~/.ssh/lab_discovery (or another key authorized on node1 as root)
+proxmox_ssh_private_key = <<-EOT
+-----BEGIN OPENSSH PRIVATE KEY-----
+...
+-----END OPENSSH PRIVATE KEY-----
+EOT
