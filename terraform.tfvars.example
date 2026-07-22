@@ -9,3 +9,9 @@ proxmox_ssh_private_key = <<-EOT
 ...
 -----END OPENSSH PRIVATE KEY-----
 EOT
+
+# Lab monitor (set true after LXC OS + compose bootstrap)
+# enable_lab_monitor_docker = true
+
+# Auth0: set AUTH0_* in .env + TF_VAR_enable_auth0=true, then apply
+# enable_auth0 = true

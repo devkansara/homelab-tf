@@ -31,3 +31,9 @@ provider "docker" {
   host     = "ssh://root@${var.immich_host}:22"
   ssh_opts = local.docker_ssh_opts
 }
+
+provider "docker" {
+  alias    = "lab_monitor"
+  host     = "ssh://root@${var.lab_monitor_host}:22"
+  ssh_opts = local.docker_ssh_opts
+}

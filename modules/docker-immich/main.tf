@@ -12,7 +12,7 @@ terraform {
 
 resource "docker_container" "server" {
   name  = "immich_server"
-  image = "ghcr.io/immich-app/immich-server:v2"
+  image = "ghcr.io/immich-app/immich-server:v3"
 
   restart  = "unless-stopped"
   must_run = true
@@ -89,7 +89,7 @@ resource "docker_container" "server" {
 
 resource "docker_container" "machine_learning" {
   name  = "immich_machine_learning"
-  image = "ghcr.io/immich-app/immich-machine-learning:v2"
+  image = "ghcr.io/immich-app/immich-machine-learning:v3"
 
   restart  = "unless-stopped"
   must_run = true

@@ -35,8 +35,38 @@ module "cloudflare" {
   account_id  = var.cloudflare_account_id
   tunnel_id   = var.cloudflare_tunnel_id
   zone_name   = var.cloudflare_zone_name
-  hostname    = var.cloudflare_hostname
   tunnel_name = var.cloudflare_tunnel_name
+  ingress = [
+    {
+      hostname = var.cloudflare_hostname
+      service  = var.cloudflare_origin_service
+    },
+    {
+      hostname = var.cloudflare_lab_hostname
+      service  = var.cloudflare_lab_origin_service
+    },
+  ]
+}
+
+module "docker_lab_monitor" {
+  count  = var.enable_lab_monitor_docker ? 1 : 0
+  source = "./modules/docker-lab-monitor"
+  providers = {
+    docker = docker.lab_monitor
+  }
+}
+
+module "auth0_lab" {
+  count  = var.enable_auth0 ? 1 : 0
+  source = "./modules/auth0"
+
+  api_audience    = var.auth0_api_audience
+  callbacks       = var.auth0_callbacks
+  logout_urls     = var.auth0_logout_urls
+  allowed_origins = var.auth0_web_origins
+  web_origins     = var.auth0_web_origins
+
+  auth0_m2m_client_id = var.auth0_m2m_client_id
 }
 
 output "proxmox_guests" {
@@ -53,17 +83,27 @@ output "docker_containers" {
 
 output "tailscale_gateway" {
   value = {
-    node_id           = module.tailscale.gateway_node_id
-    tailscale_ips     = module.tailscale.gateway_tailscale_ips
-    enabled_routes    = module.tailscale.enabled_subnet_routes
+    node_id        = module.tailscale.gateway_node_id
+    tailscale_ips  = module.tailscale.gateway_tailscale_ips
+    enabled_routes = module.tailscale.enabled_subnet_routes
   }
 }
 
-output "cloudflare_photos" {
+output "cloudflare_ingress" {
   value = {
-    hostname   = module.cloudflare.photos_hostname
-    tunnel_id  = module.cloudflare.tunnel_id
-    zone_id    = module.cloudflare.zone_id
-    dns_record = module.cloudflare.dns_record_id
+    hostnames      = module.cloudflare.hostnames
+    tunnel_id      = module.cloudflare.tunnel_id
+    zone_id        = module.cloudflare.zone_id
+    dns_record_ids = module.cloudflare.dns_record_ids
+  }
+}
+
+output "lab_monitor" {
+  value = {
+    vmid           = try(module.proxmox.guest_vmids.lab_monitor, null)
+    docker_enabled = var.enable_lab_monitor_docker
+    auth0_enabled  = var.enable_auth0
+    spa_client_id  = try(module.auth0_lab[0].spa_client_id, null)
+    api_audience   = try(module.auth0_lab[0].api_audience, null)
   }
 }

@@ -108,8 +108,74 @@ variable "cloudflare_hostname" {
   default = "photos.devkansara.me"
 }
 
+variable "cloudflare_origin_service" {
+  type    = string
+  default = "http://localhost:2283"
+}
+
+variable "cloudflare_lab_hostname" {
+  type    = string
+  default = "lab.devkansara.me"
+}
+
+variable "cloudflare_lab_origin_service" {
+  type        = string
+  description = "Origin reachable from Immich cloudflared connector"
+  default     = "http://10.10.0.240:3080"
+}
+
 variable "cloudflare_tunnel_name" {
   type        = string
   description = "Live tunnel name in Cloudflare"
   default     = "optiplex-immich"
+}
+
+variable "lab_monitor_host" {
+  type    = string
+  default = "10.10.0.240"
+}
+
+variable "enable_lab_monitor_docker" {
+  type        = bool
+  description = "Manage lab-monitor containers via Docker provider (after guest OS + compose bootstrap)"
+  default     = false
+}
+
+variable "enable_auth0" {
+  type        = bool
+  description = "Manage Auth0 SPA + API for lab monitor ops console"
+  default     = false
+}
+
+variable "auth0_api_audience" {
+  type    = string
+  default = "https://lab.devkansara.me/api"
+}
+
+# Used only to pin Auth0 provider Management API audience (not Lab Monitor API JWT aud).
+variable "auth0_tenant_domain" {
+  type        = string
+  description = "Auth0 tenant domain for Management API (must match AUTH0_DOMAIN in .env)"
+  default     = "rbachorizon.us.auth0.com"
+}
+
+variable "auth0_m2m_client_id" {
+  type        = string
+  description = "Auth0 M2M app client ID for Terraform (same as AUTH0_CLIENT_ID in .env)"
+  default     = ""
+}
+
+variable "auth0_callbacks" {
+  type    = list(string)
+  default = ["https://lab.devkansara.me", "http://localhost:5173", "http://localhost:3080"]
+}
+
+variable "auth0_logout_urls" {
+  type    = list(string)
+  default = ["https://lab.devkansara.me", "http://localhost:5173", "http://localhost:3080"]
+}
+
+variable "auth0_web_origins" {
+  type    = list(string)
+  default = ["https://lab.devkansara.me", "http://localhost:5173", "http://localhost:3080"]
 }

@@ -14,10 +14,10 @@ output "tunnel_status" {
   value = data.cloudflare_zero_trust_tunnel_cloudflared.immich.status
 }
 
-output "photos_hostname" {
-  value = var.hostname
+output "hostnames" {
+  value = [for r in var.ingress : r.hostname]
 }
 
-output "dns_record_id" {
-  value = cloudflare_record.photos.id
+output "dns_record_ids" {
+  value = { for k, r in cloudflare_record.ingress : k => r.id }
 }

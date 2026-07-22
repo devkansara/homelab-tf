@@ -1,6 +1,6 @@
 variable "account_id" {
   type        = string
-  description = "Cloudflare account ID (from Zero Trust / tunnel token payload)"
+  description = "Cloudflare account ID"
 }
 
 variable "tunnel_id" {
@@ -11,22 +11,19 @@ variable "tunnel_id" {
 
 variable "zone_name" {
   type        = string
-  description = "DNS zone, e.g. devkansara.me"
-}
-
-variable "hostname" {
-  type        = string
-  description = "Public hostname routed to Immich, e.g. photos.devkansara.me"
-}
-
-variable "origin_service" {
-  type        = string
-  description = "Tunnel ingress service URL on the Immich host"
-  default     = "http://localhost:2283"
+  description = "DNS zone"
 }
 
 variable "tunnel_name" {
   type        = string
   description = "Live tunnel name in Cloudflare Zero Trust"
   default     = "optiplex-immich"
+}
+
+variable "ingress" {
+  type = list(object({
+    hostname = string
+    service  = string
+  }))
+  description = "Hostname → origin mappings (ordered; catch-all 404 appended)"
 }
