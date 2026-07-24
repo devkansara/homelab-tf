@@ -40,6 +40,12 @@ variable "docker_ssh_private_key_path" {
   default     = "~/.ssh/lab_discovery"
 }
 
+variable "lab_ssh_public_key_path" {
+  type        = string
+  description = "Path to SSH public key injected into new LXC guests"
+  default     = "~/.ssh/lab_discovery.pub"
+}
+
 variable "jellyfin_host" {
   type    = string
   default = "10.10.0.102"
@@ -60,6 +66,31 @@ variable "immich_db_password" {
   description = "Immich Postgres password (from SOPS; optional until wired)"
   sensitive   = true
   default     = null
+}
+
+variable "immich_kiosk_api_key" {
+  type        = string
+  description = "Scoped Immich API key for kiosk user (album.read + asset.read/view/download). Store in SOPS — never commit plaintext."
+  sensitive   = true
+  default     = ""
+}
+
+variable "immich_kiosk_album_id" {
+  type        = string
+  description = "Immich album UUID locked in Kiosk (server-side; URL query overrides disabled)"
+  default     = "c60e66de-4527-452a-a642-063543527df1"
+}
+
+variable "immich_kiosk_port" {
+  type        = number
+  description = "Immich Kiosk host port — lab LAN only; intentionally not in Cloudflare tunnel ingress"
+  default     = 3456
+}
+
+variable "enable_immich_kiosk" {
+  type        = bool
+  description = "Run Immich Kiosk on Immich VM (Portal dashboard slideshow)"
+  default     = true
 }
 
 variable "sonarr_api_key" {

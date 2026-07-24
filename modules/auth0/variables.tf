@@ -23,12 +23,6 @@ variable "web_origins" {
   default = ["https://lab.devkansara.me"]
 }
 
-variable "enable_google_connection" {
-  type        = bool
-  description = "Allow Google social login on the Lab Monitor SPA"
-  default     = false
-}
-
 variable "extra_database_connection_client_ids" {
   type        = list(string)
   description = "Other Auth0 client IDs to keep on Username-Password-Authentication (e.g. M2M app)"

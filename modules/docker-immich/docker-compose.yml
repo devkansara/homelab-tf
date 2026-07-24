@@ -78,5 +78,22 @@ services:
     healthcheck:
       disable: false
 
+  immich-kiosk:
+    container_name: immich_kiosk
+    image: ghcr.io/damongolding/immich-kiosk:latest
+    environment:
+      KIOSK_IMMICH_URL: http://10.10.0.238:2283
+      KIOSK_IMMICH_API_KEY: ${KIOSK_API_KEY:-}
+      KIOSK_ALBUMS: c60e66de-4527-452a-a642-063543527df1
+      KIOSK_SHOW_TIME: "true"
+      KIOSK_SHOW_DATE: "true"
+      KIOSK_TIME_FORMAT: "24"
+      KIOSK_DISABLE_URL_QUERIES: "true"
+      KIOSK_DISABLE_CONFIG_ENDPOINT: "true"
+      KIOSK_SHOW_MORE_INFO: "false"
+    ports:
+      - "3456:3000"
+    restart: unless-stopped
+
 volumes:
   model-cache:

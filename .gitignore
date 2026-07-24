@@ -22,5 +22,13 @@ override.tf.json
 *.pem
 *.key
 
+# Local-only Nexus overlay (not in public homelab-tf portfolio)
+nexus.local.tf
+nexus_providers.local.tf
+nexus_imports.local.tf
+modules/docker-nexus/
+modules/proxmox/ct_nexus.tf
+modules/proxmox/nexus.local.tf
+
 # OS
 .DS_Store

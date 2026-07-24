@@ -63,23 +63,6 @@ data "auth0_connection" "database" {
   name = "Username-Password-Authentication"
 }
 
-data "auth0_connection" "google" {
-  name = "google-oauth2"
-}
-
-locals {
-  # When Google is off for Lab Monitor, keep other tenant apps on Google but drop the SPA.
-  google_connection_client_ids = var.enable_google_connection ? distinct(concat(
-    var.extra_database_connection_client_ids,
-    compact([var.auth0_m2m_client_id]),
-    [auth0_client.lab_spa.id, data.auth0_client.default_app.id],
-  )) : distinct(concat(
-    var.extra_database_connection_client_ids,
-    compact([var.auth0_m2m_client_id]),
-    [data.auth0_client.default_app.id],
-  ))
-}
-
 resource "auth0_connection_clients" "lab_spa_database" {
   connection_id = data.auth0_connection.database.id
   enabled_clients = distinct(concat(
@@ -87,9 +70,4 @@ resource "auth0_connection_clients" "lab_spa_database" {
     compact([var.auth0_m2m_client_id]),
     [auth0_client.lab_spa.id, data.auth0_client.default_app.id],
   ))
-}
-
-resource "auth0_connection_clients" "lab_google" {
-  connection_id   = data.auth0_connection.google.id
-  enabled_clients = local.google_connection_client_ids
 }

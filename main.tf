@@ -1,7 +1,10 @@
 module "proxmox" {
   source = "./modules/proxmox"
 
-  node_name = var.proxmox_node
+  node_name                 = var.proxmox_node
+  lab_ssh_public_key        = trimspace(file(pathexpand(var.lab_ssh_public_key_path)))
+  lab_ssh_private_key_path  = var.docker_ssh_private_key_path
+  proxmox_host              = "10.10.0.173"
 }
 
 module "docker_jellyfin" {
@@ -23,6 +26,12 @@ module "docker_immich" {
   providers = {
     docker = docker.immich
   }
+
+  kiosk_enabled    = var.enable_immich_kiosk
+  kiosk_port       = var.immich_kiosk_port
+  kiosk_album_id   = var.immich_kiosk_album_id
+  kiosk_immich_url = "http://${var.immich_host}:2283"
+  kiosk_api_key    = var.immich_kiosk_api_key
 }
 
 module "tailscale" {
@@ -105,5 +114,14 @@ output "lab_monitor" {
     auth0_enabled  = var.enable_auth0
     spa_client_id  = try(module.auth0_lab[0].spa_client_id, null)
     api_audience   = try(module.auth0_lab[0].api_audience, null)
+  }
+}
+
+output "immich_kiosk" {
+  value = {
+    enabled  = var.enable_immich_kiosk
+    url      = module.docker_immich.kiosk_url
+    port     = module.docker_immich.kiosk_port
+    album_id = var.immich_kiosk_album_id
   }
 }

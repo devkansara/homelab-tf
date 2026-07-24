@@ -15,3 +15,8 @@ EOT
 
 # Auth0: set AUTH0_* in .env + TF_VAR_enable_auth0=true, then apply
 # enable_auth0 = true
+
+# Immich Kiosk — lab LAN :3456, not on Cloudflare tunnel.
+# Create a dedicated Immich user + scoped API key first; then:
+# immich_kiosk_api_key = "..."   # sensitive — also in SOPS immich.enc.yaml as KIOSK_API_KEY
+# immich_kiosk_album_id = "c60e66de-4527-452a-a642-063543527df1"
